@@ -1,12 +1,14 @@
 # Zachary Edwards Downs
 
 # Necessary imports.
+import csv
 from apiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 # List of popular videos and their ids.
 popular=[]
 popids=[]
+array=[]
 
 # Get credentials from client secret.
 CLIENT_SECRET_FILE = 'client_secret.json'
@@ -34,20 +36,35 @@ result = request.execute()
 for item in result['items']:
     popids.append(item['id'])
 
-# Loop to output the titles of popular youtube videos and their related videos.
-for video in range(len(popids)):
 
-    # Request the related videos of the relatedToVideoID video and run that request.
-    request = youtube.search().list(part='snippet', relatedToVideoId=popids[video], type='video')
-    result = request.execute()
+with open('text.csv', mode='w') as employee_file:
+    employee_writer = csv.writer(employee_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-    # Print out the popular video id title.
-    print('')
-    print(popular[video])
-    print('')
+    # Loop to output the titles of popular youtube videos and their related videos.
+    for video in range(len(popids)):
 
-    # Print out the titles of related videos.
-    for item in result['items']:
-        print(item['snippet']['title'])
+        test=[]
+        array=[]
 
-    print('')
+        # Request the related videos of the relatedToVideoID video and run that request.
+        request = youtube.search().list(part='id', relatedToVideoId=popids[video], type='video')
+        result = request.execute()
+
+        # Print out the popular video id title.
+        print('')
+        print(popular[video])
+        print('')
+
+        # Print out the titles of related videos.
+        for item in result['items']:
+            print(item['id']['videoId'])
+            array.append(item['id']['videoId'])
+
+        test.append(popids[video])
+
+        for i in range(len(array)):
+            test.append(array[i])
+
+        employee_writer.writerow(test)
+
+        print('')
