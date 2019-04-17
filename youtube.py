@@ -79,11 +79,11 @@ for i in range(len(fnames) + 1):
 ###
 
 # Get the video ids, titles, and channel ids of the 50 most popular youtube videos.
-request = youtube.videos().list(part='snippet', chart="mostPopular", maxResults="2", regionCode="US")
+request = youtube.videos().list(part='snippet', chart="mostPopular", maxResults="50", regionCode="US")
 snippet = request.execute()
 
 # Get the view, like, comment, and other information from the 50 most popular youtube videos.
-request = youtube.videos().list(part='statistics', chart="mostPopular", maxResults="2", regionCode="US")
+request = youtube.videos().list(part='statistics', chart="mostPopular", maxResults="50", regionCode="US")
 statistics = request.execute()
 
 # Store these popular ids into popids.
@@ -97,7 +97,7 @@ for video in range(len(popids)):
     relstatistics=[]
 
     # Get the video ids, titles, and channel ids of related videos.
-    request = youtube.search().list(part='snippet', relatedToVideoId=popids[video], type='video', maxResults='3')
+    request = youtube.search().list(part='snippet', relatedToVideoId=popids[video], type='video', maxResults='15')
     relsnippet.append(request.execute())
 
     # Store snippets into relsnips.
@@ -115,7 +115,7 @@ for video in range(len(popids)):
 
 
 ###
-### Grab the videoIds of the 50 most popular YouTube videos and the videoIds of 15 related videos for each.
+### Append the videoIds of the 50 most popular YouTube videos and the videoIds of 15 related videos for each.
 ###
 
 # Open a csv file to write the data to.
@@ -141,10 +141,10 @@ with open(name, mode='w') as youtubeDATA:
 
 
     ###
-    ### Grab the channels for these videos.
+    ### Append the channelds.
     ###
 
-    # Store these ids into popids.
+    # Store channelIds into popchannels..
     for item in snippet['items']:
         popchannels.append(item['snippet']['channelId'])
 
@@ -154,10 +154,10 @@ with open(name, mode='w') as youtubeDATA:
         data=[]
         related=[]
 
-        # Append popular videoID to the data array.
+        # Append popular channelId to the data array.
         data.append(popchannels[video])
 
-        # Append related videos to the data array, after the popular videoID.
+        # Append related channelIds to the data array, after the popular channelId.
         for item in relsnips[video]:
             data.append(item['snippet']['channelId'])
 
@@ -167,26 +167,95 @@ with open(name, mode='w') as youtubeDATA:
 
 
     ###
-    ### Grab the channels for the ratings for these videos.
+    ### Append the view counts.
     ###
 
-    # Store these ids into popids.
+    # Store views into popviews.
     for item in statistics['items']:
         popviews.append(item['statistics']['viewCount'])
 
-    # Loop to append popular videoIds and their related videoIds to a csv.
     for video in range(len(popviews)):
 
         data=[]
         related=[]
 
-        # Append popular videoID to the data array.
         data.append(popviews[video])
 
-        # Append related videos to the data array, after the popular videoID.
         for videos in relstats[video]:
             for item in videos['items']:
                 data.append(item['statistics']['viewCount'])
+
+        # Store the data array as a line in a csv file.
+        youtube_writer.writerow(data)
+
+
+
+    ###
+    ### Append the comment counts.
+    ###
+
+    # Store comments into popcomments.
+    for item in statistics['items']:
+        popcomments.append(item['statistics']['commentCount'])
+
+    for video in range(len(popviews)):
+
+        data=[]
+        related=[]
+
+        data.append(popcomments[video])
+
+        for videos in relstats[video]:
+            for item in videos['items']:
+                data.append(item['statistics']['commentCount'])
+
+        # Store the data array as a line in a csv file.
+        youtube_writer.writerow(data)
+
+
+
+    ###
+    ### Append the like counts.
+    ###
+
+    # Store likes into poplikes.
+    for item in statistics['items']:
+        poplikes.append(item['statistics']['likeCount'])
+
+    for video in range(len(popviews)):
+
+        data=[]
+        related=[]
+
+        data.append(poplikes[video])
+
+        for videos in relstats[video]:
+            for item in videos['items']:
+                data.append(item['statistics']['likeCount'])
+
+        # Store the data array as a line in a csv file.
+        youtube_writer.writerow(data)
+
+
+
+    ###
+    ### Append the dislike counts.
+    ###
+
+    # Store dislikes into popdislikes.
+    for item in statistics['items']:
+        popdislikes.append(item['statistics']['dislikeCount'])
+
+    for video in range(len(popviews)):
+
+        data=[]
+        related=[]
+
+        data.append(popdislikes[video])
+
+        for videos in relstats[video]:
+            for item in videos['items']:
+                data.append(item['statistics']['dislikeCount'])
 
         # Store the data array as a line in a csv file.
         youtube_writer.writerow(data)
