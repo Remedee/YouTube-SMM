@@ -23,6 +23,10 @@ popdislikes=[]
 popviews=[]
 popcomments=[]
 
+# Related array defenition.
+relsnips=[]
+relstats=[]
+
 # Array for csv file names.
 fnames=[]
 
@@ -71,37 +75,48 @@ for i in range(len(fnames) + 1):
 
 
 ###
-### Make requests of the api for the 50 most popular videos and their related videos.
+### Make requests of the api for the 50 most popular videos and their related videos and store the information into arrays.
 ###
 
 # Get the video ids, titles, and channel ids of the 50 most popular youtube videos.
-request = youtube.videos().list(part='snippet', chart="mostPopular", maxResults="1", regionCode="US")
+request = youtube.videos().list(part='snippet', chart="mostPopular", maxResults="2", regionCode="US")
 snippet = request.execute()
 
 # Get the view, like, comment, and other information from the 50 most popular youtube videos.
-request = youtube.videos().list(part='statistics', chart="mostPopular", maxResults="1", regionCode="US")
+request = youtube.videos().list(part='statistics', chart="mostPopular", maxResults="2", regionCode="US")
 statistics = request.execute()
+
+# Store these popular ids into popids.
+for item in snippet['items']:
+    popids.append(item['id'])
 
 # Get that same data but now from the related videos of the 50 most popular videos.
 for video in range(len(popids)):
 
+    relsnippet=[]
+    relstatistics=[]
+
     # Get the video ids, titles, and channel ids of related videos.
-    request = youtube.search().list(part='snippet', relatedToVideoId=popids[video], type='video', maxResults='2')
+    request = youtube.search().list(part='snippet', relatedToVideoId=popids[video], type='video', maxResults='3')
     relsnippet.append(request.execute())
 
+    # Store snippets into relsnips.
+    for i in range(len(relsnippet)):
+        relsnips.append(relsnippet[i]['items'])
+
     # Get the view, like, comment, and other information of related videos.
-    request = youtube.search().list(part='statistics', relatedToVideoId=popids[video], type='video', maxResults='2')
-    relstats.append(request.execute())
+    for item in relsnips[0]:
+        request = youtube.videos().list(part='statistics', id=item['id']['videoId'])
+        relstatistics.append(request.execute())
+
+    # Store statistics into relstas.
+    relstats.append(relstatistics)
 
 
 
 ###
 ### Grab the videoIds of the 50 most popular YouTube videos and the videoIds of 15 related videos for each.
 ###
-
-# Store these popular ids into popids.
-for item in snippet['items']:
-    popids.append(item['id'])
 
 # Open a csv file to write the data to.
 with open(name, mode='w') as youtubeDATA:
@@ -113,25 +128,18 @@ with open(name, mode='w') as youtubeDATA:
         data=[]
         related=[]
 
-        # Get the snippet of a videos related videos.
-        relids = relsnippet[video]
-
-        # Append videoId's to the related array.
-        for item in relids['items']:
-            related.append(item['id']['videoId'])
-
         # Append popular videoID to the data array.
         data.append(popids[video])
 
-        # Append related videos to the data array, after the popular videoID.
-        for i in range(len(related)):
-            data.append(related[i])
+        # Append related videos to the data array, after the popular videoID. 
+        for item in relsnips[video]:
+            data.append(item['id']['videoId'])
 
         # Store the data array as a line in a csv file.
         youtube_writer.writerow(data)
 
 
-    '''
+
     ###
     ### Grab the channels for these videos.
     ###
@@ -146,20 +154,12 @@ with open(name, mode='w') as youtubeDATA:
         data=[]
         related=[]
 
-        # Request the related videos of the relatedToVideoID video and run that request.
-        request = youtube.search().list(part='snippet', relatedToVideoId=popids[video], type='video', maxResults='2')
-        result = request.execute()
-
-        # Append videoId's to the related array.
-        for item in result['items']:
-            related.append(item['snippet']['channelId'])
-
         # Append popular videoID to the data array.
         data.append(popchannels[video])
 
         # Append related videos to the data array, after the popular videoID.
-        for i in range(len(related)):
-            data.append(related[i])
+        for item in relsnips[video]:
+            data.append(item['snippet']['channelId'])
 
         # Store the data array as a line in a csv file.
         youtube_writer.writerow(data)
@@ -180,21 +180,13 @@ with open(name, mode='w') as youtubeDATA:
         data=[]
         related=[]
 
-        # Request the related videos of the relatedToVideoID video and run that request.
-        request = youtube.search().list(part='statistics', relatedToVideoId=popids[video], type='video', maxResults='2')
-        result = request.execute()
-
-        # Append videoId's to the related array.
-        for item in result['items']:
-            related.append(item['statistics']['viewCount'])
-
         # Append popular videoID to the data array.
         data.append(popviews[video])
 
         # Append related videos to the data array, after the popular videoID.
-        for i in range(len(related)):
-            data.append(related[i])
+        for videos in relstats[video]:
+            for item in videos['items']:
+                data.append(item['statistics']['viewCount'])
 
         # Store the data array as a line in a csv file.
         youtube_writer.writerow(data)
-        '''
