@@ -1,10 +1,19 @@
-# Zachary Edwards Downs
+# Zachary Edwards Downs | YouTube Data Api v3 Project
+
+###
+### Api set-up
+###
 
 # Necessary imports.
 import csv
 import os
 from apiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
+
+# Create the data folder if it does not already exist.
+if not os.path.isdir('data'):
+
+    os.mkdir('data')
 
 # List of popular videos ids and data file names.
 popids=[]
@@ -20,13 +29,11 @@ credentials = flow.run_console()
 apiKey = 'AIzaSyBDfBHkXmijo0Ji4Lv2pae95dJ1dyxwTo0'
 youtube = build('youtube', 'v3', developerKey=apiKey, credentials=credentials)
 
-# Get the related video ids of the 5 most popular youtube titles.
-request = youtube.videos().list(part='id', chart="mostPopular", maxResults="50", regionCode="US")
-result = request.execute()
 
-# Store these ids into popids.
-for item in result['items']:
-    popids.append(item['id'])
+
+###
+### Generates an unused file name to store data in.
+###
 
 # Change to the data directory.
 os.chdir('data')
@@ -53,6 +60,20 @@ for i in range(len(fnames) + 1):
     # If the generated file name does not exist then use it and break.
     if name != fnames[i]:
         break
+
+
+
+###
+### Grab the videoIds of the 50 most popular YouTube videos and the videoIds of 15 related videos for each.
+###
+
+# Get the related video ids of the 5 most popular youtube titles.
+request = youtube.videos().list(part='id', chart="mostPopular", maxResults="50", regionCode="US")
+result = request.execute()
+
+# Store these ids into popids.
+for item in result['items']:
+    popids.append(item['id'])
 
 # Open a csv file to write the data to.
 with open(name, mode='w') as youtubeIDS:
@@ -81,3 +102,15 @@ with open(name, mode='w') as youtubeIDS:
 
         # Store the data array as a line in a csv file.
         youtube_writer.writerow(data)
+
+
+
+###
+### Grab the channels for these videos.
+###
+
+
+
+###
+### Grab the channels for the ratings for these videos.
+###
