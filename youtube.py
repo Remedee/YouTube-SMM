@@ -105,7 +105,7 @@ for video in range(len(popids)):
         relsnips.append(relsnippet[i]['items'])
 
     # Get the view, like, comment, and other information of related videos.
-    for item in relsnips[0]:
+    for item in relsnips[video]:
         request = youtube.videos().list(part='statistics', id=item['id']['videoId'])
         relstatistics.append(request.execute())
 
@@ -133,7 +133,10 @@ with open(name, mode='w') as youtubeDATA:
 
         # Append related videos to the data array, after the popular videoID. 
         for item in relsnips[video]:
-            data.append(item['id']['videoId'])
+            try:
+                data.append(item['id']['videoId'])
+            except KeyError as e:
+                data.append('NULL')
 
         # Store the data array as a line in a csv file.
         youtube_writer.writerow(data)
@@ -146,7 +149,10 @@ with open(name, mode='w') as youtubeDATA:
 
     # Store channelIds into popchannels..
     for item in snippet['items']:
-        popchannels.append(item['snippet']['channelId'])
+        try:
+            popchannels.append(item['snippet']['channelId'])
+        except KeyError as e:
+            popchannels.append('NULL')
 
     # Loop to append chanelIds to a csv.
     for video in range(len(popchannels)):
@@ -159,7 +165,10 @@ with open(name, mode='w') as youtubeDATA:
 
         # Append related channelIds to the data array, after the popular channelId.
         for item in relsnips[video]:
-            data.append(item['snippet']['channelId'])
+            try:
+                data.append(item['snippet']['channelId'])
+            except KeyError as e:
+                data.append('NULL')
 
         # Store the data array as a line in a csv file.
         youtube_writer.writerow(data)
@@ -172,7 +181,10 @@ with open(name, mode='w') as youtubeDATA:
 
     # Store views into popviews.
     for item in statistics['items']:
-        popviews.append(item['statistics']['viewCount'])
+        try:
+            popviews.append(item['statistics']['viewCount'])
+        except KeyError as e:
+            popviews.append('NULL')
 
     for video in range(len(popviews)):
 
@@ -183,7 +195,11 @@ with open(name, mode='w') as youtubeDATA:
 
         for videos in relstats[video]:
             for item in videos['items']:
-                data.append(item['statistics']['viewCount'])
+                try:
+                    if 'viewCount' in item['statistics']:
+                            data.append(item['statistics']['viewCount'])
+                except KeyError as e:
+                    data.append('NULL')
 
         # Store the data array as a line in a csv file.
         youtube_writer.writerow(data)
@@ -196,7 +212,10 @@ with open(name, mode='w') as youtubeDATA:
 
     # Store comments into popcomments.
     for item in statistics['items']:
-        popcomments.append(item['statistics']['commentCount'])
+        try:
+            popcomments.append(item['statistics']['commentCount'])
+        except KeyError as e:
+            popcomments.append('NULL')
 
     for video in range(len(popviews)):
 
@@ -207,7 +226,11 @@ with open(name, mode='w') as youtubeDATA:
 
         for videos in relstats[video]:
             for item in videos['items']:
-                data.append(item['statistics']['commentCount'])
+                try:
+                    if 'commentCount' in item['statistics']:
+                        data.append(item['statistics']['commentCount'])
+                except KeyError as e:
+                    data.append('NULL')
 
         # Store the data array as a line in a csv file.
         youtube_writer.writerow(data)
@@ -220,7 +243,10 @@ with open(name, mode='w') as youtubeDATA:
 
     # Store likes into poplikes.
     for item in statistics['items']:
-        poplikes.append(item['statistics']['likeCount'])
+        try:
+            poplikes.append(item['statistics']['likeCount'])
+        except KeyError as e:
+            poplikes.append('NULL')
 
     for video in range(len(popviews)):
 
@@ -231,7 +257,11 @@ with open(name, mode='w') as youtubeDATA:
 
         for videos in relstats[video]:
             for item in videos['items']:
-                data.append(item['statistics']['likeCount'])
+                try:
+                    if 'likeCount' in item['statistics']:
+                        data.append(item['statistics']['likeCount'])
+                except KeyError as e:
+                    data.append('NULL')
 
         # Store the data array as a line in a csv file.
         youtube_writer.writerow(data)
@@ -244,7 +274,10 @@ with open(name, mode='w') as youtubeDATA:
 
     # Store dislikes into popdislikes.
     for item in statistics['items']:
-        popdislikes.append(item['statistics']['dislikeCount'])
+        try:
+            popdislikes.append(item['statistics']['dislikeCount'])
+        except KeyError as e:
+            popdislikes.append('NULL')
 
     for video in range(len(popviews)):
 
@@ -255,7 +288,11 @@ with open(name, mode='w') as youtubeDATA:
 
         for videos in relstats[video]:
             for item in videos['items']:
-                data.append(item['statistics']['dislikeCount'])
+                try:
+                    if 'dislikeCount' in item['statistics']:
+                        data.append(item['statistics']['dislikeCount'])
+                except KeyError as e:
+                    data.append('NULL')
 
         # Store the data array as a line in a csv file.
         youtube_writer.writerow(data)
