@@ -1,9 +1,9 @@
 # Authors: Mia Ward, Arturo Mora, Zachary Edwards Downs | R-Script to analyze a youtube data api data set.
 
 # ~ Data Organization Notes ~
-# data is the raw csv file as a dataframe.
+# data is the csv file with bad data points removed.
 # popular is a dataframe of the popular videos and their attributes.
-# related is a list of dataframes for the related videos and their attributes.
+# related is a list of dataframes for the related videos and their attributes.``
 # To access the dataframe for the first popular video's related videos you would use related[[1]] and so on...
 # The rest are just the raw data broken up into dataframes based on the attribute they are, views, likes, etc.
 
@@ -11,12 +11,60 @@
 ### DATA PREPERATION
 ###
 
-# Read in a csv and remove the extra column.
+# Read in a csv and remove the extra columns.
 data <- read.csv(file='data/data0.csv',header=FALSE,sep=',')
 data$V16 <- NULL
+data$V15 <- NULL
 
-# Reads the data into data frames seperated by every 50 rows.
-datalist <- split(data,rep(1:6,each=50))
+# Set while loop variables.
+x <- 50
+i <- 1
+      
+# Loop to remove all rows of a videos attributes if it does not have at least 13 related videos.
+while (i < nrow(data)) {
+
+  # Decide what command to run based on dataframe row number.
+  if (i < 51) {
+    v <- 'data <- data[-c(i, i + x, i + x * 2, i + x * 3, i + x * 4, i + x * 5),]'
+  }
+  else if (i < 101) {
+    v <- 'data <- data[-c(i - x, i, i + x, i + x * 2, i + x * 3, i + x * 4),]'
+  }
+  else if (i < 151) {
+    v <- 'data <- data[-c(i - x * 2, i - x, i, i + x, i + x * 2, i + x * 3),]'
+  }
+  else if (i < 201) {
+    v <- 'data <- data[-c(i - x * 3, i - x * 2, i - x, i, i + x, i + x * 2),]'
+  }
+  else if (i < 251) {
+    v <- 'data <- data[-c(i - x * 4, i - x * 3, i -x * 2, i - x, i, i + x),]'
+  }
+  else {
+    v <- 'data <- data[-c(i - x * 5, i - x * 4, i -x * 3, i - x * 2, i - x, i),]'
+  }
+  
+  # If the row exists and column 14 is blank then remove rows containing its attributes.
+  # Decriment x by 1, and reset the loop to the beggining.
+  if (!(is.na(data[i,]$V14))) {
+    if (data[i,]$V14 == "") {
+      eval(parse(text=v))
+      x <- x - 1
+      i <- 1
+    }
+  }
+  
+  i <- i + 1
+
+}
+
+# Re-configure row incicators.
+row.names(data) <- 1:nrow(data)
+
+# The number of videos still in the data set after removing bad values.
+NUMVID = x
+
+# Reads the data into data frames seperated by every NUMVID rows.
+datalist <- split(data,rep(1:6,each=NUMVID))
 
 # Loop through the data list to create data frames of its elements.
 for (i in 1:6) {
@@ -38,15 +86,15 @@ rel <- list()
 related <- list()
 
 # Get a list of the most popular youtube videos and their attributes.
-for (i in 1:50) {
+for (i in 1:NUMVID) {
   
   # Store the videos attributes into popular[[i]].
   pop[[i]] <- data.frame(Video=data[i, 1],
-                             Channel=data[i + 50, 1],
-                             Views=data[i + 100, 1],
-                             Comments=data[i + 150, 1],
-                             Likes=data[i + 200, 1],
-                             Dislikes=data[i + 250, 1])
+                             Channel=data[i + NUMVID, 1],
+                             Views=data[i + NUMVID * 2, 1],
+                             Comments=data[i + NUMVID * 3, 1],
+                             Likes=data[i + NUMVID * 4, 1],
+                             Dislikes=data[i + NUMVID * 5, 1])
   
   # Make popular into a dataframe rather than a list of dataframes.
   if (i < 2) {
@@ -59,16 +107,16 @@ for (i in 1:50) {
 }
 
 # Get a list of the related videos and their attributes.
-for (i in 1:50) {
+for (i in 1:NUMVID) {
   
-  for (j in 2:15) {
+  for (j in 2:14) {
     # Store the videos attributes into popular[[i]].
     rel[[j - 1]] <- data.frame(Video=data[i, j],
-                               Channel=data[i + 50, j],
-                               Views=data[i + 100, j],
-                               Comments=data[i + 150, j],
-                               Likes=data[i + 200, j],
-                               Dislikes=data[i + 250, j])
+                               Channel=data[i + NUMVID, j],
+                               Views=data[i + NUMVID * 2, j],
+                               Comments=data[i + NUMVID * 3, j],
+                               Likes=data[i + NUMVID * 4, j],
+                               Dislikes=data[i + NUMVID * 5, j])
     
     # Make related[[i]] into a dataframe rather than a list of dataframes.
     if (j < 3) {
@@ -83,7 +131,7 @@ for (i in 1:50) {
 }
 
 # Remove no longer needed workspace objects.
-rm(i, j, datalist, rel, pop)
+rm(i, j, datalist, rel, pop, x, v)
 
 
 
