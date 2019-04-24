@@ -138,3 +138,22 @@ rm(i, j, datalist, rel, pop, x, v)
 ###
 ### DATA ANALYSIS
 ###
+
+# Necessary libraries.
+library(ggplot2)
+library(reshape)
+
+# Rename the column names of videoids.
+names(videoids) <- c("Popular", "R01", "R02", "R03", "R04", "R05", "R06", "R07", "R08", "R09", "R10", "R11", "R12", "R13")
+
+# Reshpae videoids into videograph based on the Popular column.
+videograph <- melt(videoids, id.vars="Popular")
+
+# Plot videograph into a coherent graph.
+ggplot(videograph, aes(Popular,value, col=variable)) + 
+  geom_point() + 
+  stat_smooth() + 
+  labs(color='Related') +
+  ylab ('Related') +
+  theme(axis.text.x=element_blank(), axis.text.y=element_blank())
+# Explanation Example: geom_text(data=subset(videomelt, value=="pvuN_WvF1to"), label='HELLO')
