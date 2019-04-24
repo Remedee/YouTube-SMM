@@ -163,6 +163,7 @@ pop_likes <- 0
 
 #for each popular video, get the number of likes it has.-> video_occurs. For each related video of the popular video, get the likes it has
 #make loop to check if popular video has more or less likes than its related videos
+#By Mia Ward
 
 #getting array of popular video id and its number of likes
 for (i in 1:NUMVID){
@@ -213,4 +214,5 @@ for (i in 1:46){
   }
 }
 
+#removing unwanted variables and arrays
 rm(i,j,pop_id,pop_likes,realted_likes,related_id,related_li,video_occurs,popular_likes,related_likes)
