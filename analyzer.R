@@ -12,17 +12,17 @@
 ###
 
 # Read in a csv and remove the extra columns.
-data <- read.csv(file='GitHub/YouTube-SMM/data/data2.csv',header=FALSE,sep=',')
+data <- read.csv(file='GitHub/YouTube-SMM/data/data3.csv',header=FALSE,sep=',')
 data$V16 <- NULL
 data$V15 <- NULL
 
 # Set while loop variables.
 x <- 50
 i <- 1
-      
+
 # Loop to remove all rows of a videos attributes if it does not have at least 13 related videos.
 while (i < nrow(data)) {
-
+  
   # Decide what command to run based on dataframe row number.
   if (i < 51) {
     v <- 'data <- data[-c(i, i + x, i + x * 2, i + x * 3, i + x * 4, i + x * 5),]'
@@ -54,7 +54,7 @@ while (i < nrow(data)) {
   }
   
   i <- i + 1
-
+  
 }
 
 # Re-configure row incicators.
@@ -90,11 +90,11 @@ for (i in 1:NUMVID) {
   
   # Store the videos attributes into popular[[i]].
   pop[[i]] <- data.frame(Video=data[i, 1],
-                             Channel=data[i + NUMVID, 1],
-                             Views=data[i + NUMVID * 2, 1],
-                             Comments=data[i + NUMVID * 3, 1],
-                             Likes=data[i + NUMVID * 4, 1],
-                             Dislikes=data[i + NUMVID * 5, 1])
+                         Channel=data[i + NUMVID, 1],
+                         Views=data[i + NUMVID * 2, 1],
+                         Comments=data[i + NUMVID * 3, 1],
+                         Likes=data[i + NUMVID * 4, 1],
+                         Dislikes=data[i + NUMVID * 5, 1])
   
   # Make popular into a dataframe rather than a list of dataframes.
   if (i < 2) {
@@ -166,6 +166,8 @@ pop_likes <- 0
 #make sure to change the number of popular videos we get and the total number of related videos
 #By Mia Ward
 
+related_videos_num <- nrow(videograph)
+
 #getting array of popular video id and its number of likes
 for (i in 1:NUMVID){
   video_occurs[i] <- as.character(popular[i,1])
@@ -175,7 +177,7 @@ for (i in 1:NUMVID){
   pop_likes[i] <- as.character(popular[i,5])
 }
 
-popular_likes <- array(c(video_occurs,pop_likes), dim = c(49,2))
+popular_likes <- array(c(video_occurs,pop_likes), dim = c(NUMVID,2))
 
 related_id <- 0
 related_li <- 0
@@ -196,13 +198,13 @@ for (i in 1:NUMVID){
 }
 
 #concat ids and likes of related videos
-related_likes <- array(c(related_id, related_li), dim = c(637,2))
+related_likes <- array(c(related_id, related_li), dim = c(related_videos_num,2))
 
 popular_likes_count <- 0
 related_likes_count <- 0
 
 #loop through 46 popular videos and if popular has more likes than related then add 1 to popular_likes_count otherwise add 1 to related_likes_count
-for (i in 1:49){
+for (i in 1:NUMVID){
   for (j in 1:13){
     if (popular_likes[i,2] > related_likes[j,2]){
       popular_likes_count <- popular_likes_count + 1
