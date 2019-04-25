@@ -1,7 +1,11 @@
 For Data set 0:
 	popular videos had 311 instances of having more likes than their related videos. So, 52%.
-	related videos had 287 instances of having more likes than their popular videos. So, 48%.
+	related videos had 287 instances of having more likes than their popular video. So, 48%.
 
 For Data set 1:
 	popular videos had 235 instances of having more likes than their related videos. So, 39.3%.
-	related videos had 363 instances of having more likes than their popular videos. So, 60.7%.
+	related videos had 363 instances of having more likes than their popular video. So, 60.7%.
+
+For Data set 2:
+	popular videos had 51 instances of having more likes than their related videos. So, 8.5%.
+	related videos had 547 instances of having more likes than their popular video. So, 97.5%.
