@@ -12,7 +12,7 @@
 ###
 
 # Read in a csv and remove the extra columns.
-data <- read.csv(file='GitHub/YouTube-SMM/data/data0.csv',header=FALSE,sep=',')
+data <- read.csv(file='GitHub/YouTube-SMM/data/data2.csv',header=FALSE,sep=',')
 data$V16 <- NULL
 data$V15 <- NULL
 
@@ -163,6 +163,7 @@ pop_likes <- 0
 
 #for each popular video, get the number of likes it has.-> video_occurs. For each related video of the popular video, get the likes it has
 #make loop to check if popular video has more or less likes than its related videos
+#make sure to change the number of popular videos we get and the total number of related videos
 #By Mia Ward
 
 #getting array of popular video id and its number of likes
@@ -174,9 +175,7 @@ for (i in 1:NUMVID){
   pop_likes[i] <- as.character(popular[i,5])
 }
 
-popular_likes <- array(c(video_occurs,pop_likes), dim = c(46,2))
-
-related[[2]]
+popular_likes <- array(c(video_occurs,pop_likes), dim = c(49,2))
 
 related_id <- 0
 related_li <- 0
@@ -197,13 +196,13 @@ for (i in 1:NUMVID){
 }
 
 #concat ids and likes of related videos
-related_likes <- array(c(related_id, related_li), dim = c(598,2))
+related_likes <- array(c(related_id, related_li), dim = c(637,2))
 
 popular_likes_count <- 0
 related_likes_count <- 0
 
 #loop through 46 popular videos and if popular has more likes than related then add 1 to popular_likes_count otherwise add 1 to related_likes_count
-for (i in 1:46){
+for (i in 1:49){
   for (j in 1:13){
     if (popular_likes[i,2] > related_likes[j,2]){
       popular_likes_count <- popular_likes_count + 1
@@ -215,4 +214,4 @@ for (i in 1:46){
 }
 
 #removing unwanted variables and arrays
-rm(i,j,pop_id,pop_likes,realted_likes,related_id,related_li,video_occurs,popular_likes,related_likes)
+rm(i,j,pop_likes,related_id,related_li,video_occurs,popular_likes, related_likes)
