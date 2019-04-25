@@ -12,7 +12,7 @@
 ###
 
 # Read in a csv and remove the extra columns.
-data <- read.csv(file='data/data0.csv',header=FALSE,sep=',')
+data <- read.csv(file='GitHub/YouTube-SMM/data/data2.csv',header=FALSE,sep=',')
 data$V16 <- NULL
 data$V15 <- NULL
 
@@ -149,7 +149,7 @@ names(videoids) <- c("Popular", "R01", "R02", "R03", "R04", "R05", "R06", "R07",
 # Reshpae videoids into videograph based on the Popular column.
 videograph <- melt(videoids, id.vars="Popular")
 
-# Plot videograph into a coherent graph.
+# Plot videograph into a coherent graph.ins
 ggplot(videograph, aes(Popular,value, col=variable)) + 
   geom_point() + 
   stat_smooth() + 
@@ -157,3 +157,61 @@ ggplot(videograph, aes(Popular,value, col=variable)) +
   ylab ('Related') +
   theme(axis.text.x=element_blank(), axis.text.y=element_blank())
 # Explanation Example: geom_text(data=subset(videomelt, value=="pvuN_WvF1to"), label='HELLO')
+
+video_occurs <- 0
+pop_likes <- 0
+
+#for each popular video, get the number of likes it has.-> video_occurs. For each related video of the popular video, get the likes it has
+#make loop to check if popular video has more or less likes than its related videos
+#make sure to change the number of popular videos we get and the total number of related videos
+#By Mia Ward
+
+#getting array of popular video id and its number of likes
+for (i in 1:NUMVID){
+  video_occurs[i] <- as.character(popular[i,1])
+}
+
+for (i in 1:NUMVID){
+  pop_likes[i] <- as.character(popular[i,5])
+}
+
+popular_likes <- array(c(video_occurs,pop_likes), dim = c(49,2))
+
+related_id <- 0
+related_li <- 0
+related_likes <- 0
+
+#getting array of related video ids
+for (i in 1:NUMVID){
+  for (j in 1:13){
+    related_id[j + (13*(i-1))] <- as.character(related[[i]][[j,1]])
+  }
+}
+
+#getting array of related video likes
+for (i in 1:NUMVID){
+  for (j in 1:13){
+    related_li[j + (13*(i-1))] <- as.character(related[[i]][[j,5]])
+  }
+}
+
+#concat ids and likes of related videos
+related_likes <- array(c(related_id, related_li), dim = c(637,2))
+
+popular_likes_count <- 0
+related_likes_count <- 0
+
+#loop through 46 popular videos and if popular has more likes than related then add 1 to popular_likes_count otherwise add 1 to related_likes_count
+for (i in 1:49){
+  for (j in 1:13){
+    if (popular_likes[i,2] > related_likes[j,2]){
+      popular_likes_count <- popular_likes_count + 1
+    }
+    else {
+      related_likes_count <- related_likes_count + 1
+    }
+  }
+}
+
+#removing unwanted variables and arrays
+rm(i,j,pop_likes,related_id,related_li,video_occurs,popular_likes, related_likes)
