@@ -12,7 +12,7 @@
 ###
 
 # Read in a csv and remove the extra columns.
-data <- read.csv(file='GitHub/YouTube-SMM/data/data3.csv',header=FALSE,sep=',')
+data <- read.csv(file='data/data0.csv',header=FALSE,sep=',')
 data$V16 <- NULL
 data$V15 <- NULL
 
