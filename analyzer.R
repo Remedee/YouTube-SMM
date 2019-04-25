@@ -217,3 +217,132 @@ for (i in 1:NUMVID){
 
 #removing unwanted variables and arrays
 rm(i,j,pop_likes,related_id,related_li,video_occurs,popular_likes, related_likes)
+
+
+## This part deals with videos being reccomended more than one time.
+## These next two sections find that videos that occur more than once have no above average number of
+## views, likes, or comments, and that dislikes don't appear to affect how many times it's recommended.
+
+#
+# Number of Occurances
+#
+
+# Create an occurances list.
+occurances <- list()
+
+# Add videoids fro related videos to occurances and do not add duplicates.
+for (i in 1:NUMVID) 
+{
+  for (j in 1:14) 
+  {
+    if (!(as.character(videoids[i,j]) %in% occurances)) 
+    {
+      occurances[j + (14 * (i - 1))] <- as.character(videoids[i,j])
+    }
+  }
+}
+
+# Remove null values from occurances. (Caused by nothing appeneded when duplicates occur.)
+occurances <- occurances[-which(lapply(occurances,is.null) == T)]
+
+# Append occurances as column1 of the dataframe occ.
+occ <- data.frame(videoid=I(occurances), occurances=0)
+
+# List to be used in the next section: Averages.
+values <- data.frame(Video=0,Views=0, Comments=0, Likes=0, Dislikes=0)
+
+# Check for each row of occ if the video id is in any and every value of videoids and add 1 to its occurances each time it is found.
+for (i in 1:nrow(occ)) 
+{
+  for (j in 1:NUMVID)
+  {
+    for (k in 1:14) {
+      if (occ[i,1] %in% videoids[j,k]) 
+      {
+        occ[i,2] <- occ[i,2] + 1
+      }
+      # On the first pass make a dataframe known as values to append data too.
+      if (i == 1) 
+      {
+        if (!(as.character(videoids[j,k]) %in% values[,1]))
+        {
+          values[k + (14 * (j - 1)),1] <- as.character(videoids[j,k])
+          values[k + (14 * (j - 1)),2] <- as.numeric(as.character(views[j,k]))
+          values[k + (14 * (j - 1)),3] <- as.numeric(as.character(comments[j,k]))
+          values[k + (14 * (j - 1)),4] <- as.numeric(as.character(likes[j,k]))
+          values[k + (14 * (j - 1)),5] <- as.numeric(as.character(dislikes[j,k]))
+        }
+      }
+    }
+  }
+}
+
+# Remove the uneeded variables.
+rm (i, j, k , occurances)
+
+#
+# Calculate Above Average
+#
+
+# Remove rows in values containing nothing but NA.
+values <- values[!(rowSums(is.na(values)) == 5),]
+# Append occurances column 2 to new column OCCTotal in values.
+values$OCCTotal <- occ[,2]
+# Remove any rows in values with NA in it at all.
+values <- values[rowSums(is.na(values)) == 0,]
+
+# Calculate mean values for comparison.
+meanView <- mean(values[,'Views'])
+meanComm <- mean(values[,'Comments'])
+meanLike <- mean(values[,'Likes'])
+meanDisl <- mean(values[,'Dislikes'])
+
+# Generate a means data frame of all 0s.
+means <- as.data.frame(matrix(0, ncol=5, nrow=nrow(values)))
+names(means) <- c('AAViews','AAComments','AALikes','AADislikes','AATotal')
+
+# If a video has above average stats add a 1 to that column, unless dislikes where a -1 is added.
+for (i in 1:nrow(values)) 
+{
+  if (values[i,2] > meanView) 
+  {
+    means[i,1] <- 1
+  }
+  if (values[i,3] > meanComm) 
+  {
+    means[i,2] <- 1
+  }
+  if (values[i,4] > meanLike) 
+  {
+    means[i,3] <- 1
+  }
+  if (values[i,5] > meanDisl) 
+  {
+    means[i,4] <- -1
+  }
+}
+
+# Sum a videos above average score into AATotal
+for (i in 1:nrow(means)) 
+{
+  means[i,5] <- means[i,1] + means[i,2] + means[i,3] + means[i,4]
+}
+
+# Append the AATotal Column from means into values.
+values$AATotal <- means[,5]
+
+# Tell if video is in popular or not with TRUE and FALSE.
+for (i in 1:nrow(values))
+{
+  if (values[i,1] %in% videoids[,1]) 
+  {
+    values[i,8] <- TRUE
+  }
+  else
+  {
+    values[i,8] <- FALSE
+  }
+}
+
+# Remove unecessary objects.
+rm(i,meanView,meanComm,meanLike,meanDisl,occ,means)
