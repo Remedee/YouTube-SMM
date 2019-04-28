@@ -12,7 +12,7 @@
 ###
 
 # Read in a csv and remove the extra columns.
-data <- read.csv(file='data/data0.csv',header=FALSE,sep=',')
+data <- read.csv(file='GitHub/YouTube-SMM/data/data3.csv',header=FALSE,sep=',')
 data$V16 <- NULL
 data$V15 <- NULL
 
@@ -161,7 +161,7 @@ ggplot(videograph, aes(Popular,value, col=variable)) +
 video_occurs <- 0
 pop_likes <- 0
 
-#for each popular video, get the number of likes it has.-> video_occurs. For each related video of the popular video, get the likes it has
+#for each popular video, get the number of likes it has -> video_occurs. For each related video of the popular video, get the likes it has
 #make loop to check if popular video has more or less likes than its related videos
 #make sure to change the number of popular videos we get and the total number of related videos
 #By Mia Ward
@@ -346,3 +346,19 @@ for (i in 1:nrow(values))
 
 # Remove unecessary objects.
 rm(i,meanView,meanComm,meanLike,meanDisl,occ,means)
+
+#Finding which videos are the most popular among all the videos. So looking for the most occuring videos.
+#Interating through OCCTotal, if the OCCTotal for a video is greater than 2, then add that video id to an array with all popular videos
+
+cream_of_the_crop <- c()
+num_of_videos <- nrow(values)
+
+
+for (i in 1:num_of_videos){
+  if (values[i,"OCCTotal"] > 2) {
+    cream_of_the_crop <- c(cream_of_the_crop, values[i,"Video"])
+  }
+}
+
+print(cream_of_the_crop)
+

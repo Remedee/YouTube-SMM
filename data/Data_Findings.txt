@@ -13,3 +13,18 @@ For Data set 2:
 For Data set 3:
 	popular videos had 232 instances of having more likes than their related videos. So, 38%.
 	related videos had 379 instances of having more likes than their popular video. So, 62%.
+
+Cream of the Crop videos for Data set 0:
+	"pvuN_WvF1to" "K712sxMREnQ" "A_D1huHoa8g"
+
+Cream of the Crop videos for Data set 1:
+	"WF3fkS4G0N8" "SliK_B4slvg" "oZ0yNmxmF9I" "idUT8Fk71iE" "KWmP1HUAtO4" "yIkcBEEaaco" "tAOLDYY6AZM" "aVRCSDQAp1M" 	"VYz069UdNEI" "IR9x3PWaiY0"
+
+Cream of the Crop videos for Data set 2:
+	"TgWKutWMT-o" "bsagopMV3ps" "ESmhuvXyizg" "AJrmiIcQ0Ss" "F_IcydMxYF0" "M_dNgoGYWUM" "zz0vkGCvLsM" "iDrSylfg1TE" "myL2ZXEsibE"
+	"YGdwFtjBv0g" "dwV04XuiWq4" "YpqaWQiyQRA" "1j-D-oBrMyA" "6jaks_F2UFU" "NN9q4gSN1nY" "85p_oFk595I"
+
+Cream of the Crop videos for Data set 3:
+	"ESmhuvXyizg" "u90hopSXtlg" "6jaks_F2UFU" "3jCsZBEuvvw" "YpqaWQiyQRA" "kLQXPV12IfI" "F_IcydMxYF0" "BfPgTFYz1HE" "UtgcVzd8vsE"
+	"4IfcDSri7Xk" "zz0vkGCvLsM" "FVFPRstvlvk" "pvuN_WvF1to" "CWuJT_U14G4" "_4zczrxuCjY" "NscJhEV_Kbs" "myL2ZXEsibE" "dwV04XuiWq4"
+	"xnWCfchKYkQ"
