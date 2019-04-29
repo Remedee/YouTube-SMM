@@ -346,3 +346,24 @@ for (i in 1:nrow(values))
 
 # Remove unecessary objects.
 rm(i,meanView,meanComm,meanLike,meanDisl,occ,means)
+
+#
+# 
+#
+
+# Decision Tree
+# Mean Popular
+# Popular Channels
+library(rpart)
+
+tree.model <- rpart(V8~., data=values[,c(2,3,4,5,8)], method="class")
+
+tree.prediction <- predict(tree.model, newdata=values[,c(2,3,4,5,8)], type="class")
+
+confusion.matrix <- table(values$V8, tree.prediction)
+
+accuracy.percent <- 100*sum(diag(confusion.matrix))/sum(confusion.matrix)
+
+plot(tree.model)
+text(tree.model, pretty=1)
+
