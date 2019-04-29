@@ -347,6 +347,27 @@ for (i in 1:nrow(values))
 # Remove unecessary objects.
 rm(i,meanView,meanComm,meanLike,meanDisl,occ,means)
 
+#
+# Decision Tree
+#
+
+# Decision Tree
+# Mean Popular
+# Popular Channels
+library(rpart)
+
+tree.model <- rpart(V8~., data=values[,c(2,3,4,5,8)], method="class")
+
+tree.prediction <- predict(tree.model, newdata=values[,c(2,3,4,5,8)], type="class")
+
+confusion.matrix <- table(values$V8, tree.prediction)
+
+accuracy.percent <- 100*sum(diag(confusion.matrix))/sum(confusion.matrix)
+
+plot(tree.model)
+text(tree.model, pretty=1)
+
+
 #Finding which videos are the most popular among all the videos. So looking for the most occuring videos.
 #Interating through OCCTotal, if the OCCTotal for a video is greater than 2, then add that video id to an array with all popular videos
 
@@ -361,4 +382,5 @@ for (i in 1:num_of_videos){
 }
 
 print(cream_of_the_crop)
+
 
