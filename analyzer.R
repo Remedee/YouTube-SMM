@@ -3,7 +3,7 @@
 # ~ Data Organization Notes ~
 # data is the csv file with bad data points removed.
 # popular is a dataframe of the popular videos and their attributes.
-# related is a list of dataframes for the related videos and their attributes.``
+# related is a list of dataframes for the related videos and their attributes.
 # To access the dataframe for the first popular video's related videos you would use related[[1]] and so on...
 # The rest are just the raw data broken up into dataframes based on the attribute they are, views, likes, etc.
 
@@ -11,8 +11,8 @@
 ### DATA PREPERATION
 ###
 
-# Read in a csv and remove the extra columns.
-data <- read.csv(file='GitHub/YouTube-SMM/data/data3.csv',header=FALSE,sep=',')
+# Read in a csv and remove the extra columns often left blank by the api.
+data <- read.csv(file='data/data3.csv',header=FALSE,sep=',')
 data$V16 <- NULL
 data$V15 <- NULL
 
@@ -57,7 +57,7 @@ while (i < nrow(data)) {
   
 }
 
-# Re-configure row incicators.
+# Re-configure row indicators.
 row.names(data) <- 1:nrow(data)
 
 # The number of videos still in the data set after removing bad values.
@@ -351,31 +351,32 @@ rm(i,meanView,meanComm,meanLike,meanDisl,occ,means)
 # Decision Tree
 #
 
-# Decision Tree
-# Mean Popular
-# Popular Channels
 library(rpart)
 
+# Create a decision tree using the views, comments, likes, and dislikes of values and if the video is popular or not.
 tree.model <- rpart(V8~., data=values[,c(2,3,4,5,8)], method="class")
 
+# Use the tree to predict for each video whether it will be popular or not.
 tree.prediction <- predict(tree.model, newdata=values[,c(2,3,4,5,8)], type="class")
 
+# Make a confusion matrix showing how many data points the prediction got right and wrong.
 confusion.matrix <- table(values$V8, tree.prediction)
 
+# Get the percentage of accuracy the prediction had.
 accuracy.percent <- 100*sum(diag(confusion.matrix))/sum(confusion.matrix)
 
+# Plot the tree model.
 plot(tree.model)
 text(tree.model, pretty=1)
-
 
 #Finding which videos are the most popular among all the videos. So looking for the most occuring videos.
 #Interating through OCCTotal, if the OCCTotal for a video is greater than 2, then add that video id to an array with all popular videos
 
 cream_of_the_crop <- c()
-num_of_videos <- nrow(values)
+total_videos <- nrow(values)
 
 
-for (i in 1:num_of_videos){
+for (i in 1:total_videos){
   if (values[i,"OCCTotal"] > 2) {
     cream_of_the_crop <- c(cream_of_the_crop, values[i,"Video"])
   }
@@ -383,4 +384,6 @@ for (i in 1:num_of_videos){
 
 print(cream_of_the_crop)
 
+# Cleanup non-result data sets and uneeded objects.
+rm(i, channelids, comments, views, likes, dislikes, data)
 
