@@ -15,16 +15,30 @@ For Data set 3:
 	related videos had 379 instances of having more likes than their popular video. So, 62%.
 
 Cream of the Crop videos for Data set 0:
-	"pvuN_WvF1to" "K712sxMREnQ" "A_D1huHoa8g"
+	"pvuN_WvF1to" = Lil Dicky - Earth (Official Music Video)
+ 	"K712sxMREnQ" = Everton v. Man United | PREMIER LEAGUE EXTENDED HIGHLIGHTS | 4/21/19 | NBC Sports
+ 	"A_D1huHoa8g" = Flinch w/ Blackpink
 
 Cream of the Crop videos for Data set 1:
-	"WF3fkS4G0N8" "SliK_B4slvg" "oZ0yNmxmF9I" "idUT8Fk71iE" "KWmP1HUAtO4" "yIkcBEEaaco" "tAOLDYY6AZM" "aVRCSDQAp1M" 	"VYz069UdNEI" "IR9x3PWaiY0"
+	"WF3fkS4G0N8" = Russell Westbrook isn't built for the playoffs & his handling of media reflects it | NBA | THE HERD
+ 	"SliK_B4slvg" = Kevin Durant has yet to prove he's a better player than LeBron - Chris Broussard | NBA | THE HERD
+ 	"oZ0yNmxmF9I" = 'Russell Westbrook’s legacy is not going to be about winning' — Chris Broussard | NBA | UNDISPUTED
+ 	"idUT8Fk71iE" = Russell Westbrook can’t be your No. 1 option for a championship team - Stephen A. | First Take
+	"KWmP1HUAtO4" "yIkcBEEaaco" "tAOLDYY6AZM" "aVRCSDQAp1M" "VYz069UdNEI" "IR9x3PWaiY0"
 
 Cream of the Crop videos for Data set 2:
-	"TgWKutWMT-o" "bsagopMV3ps" "ESmhuvXyizg" "AJrmiIcQ0Ss" "F_IcydMxYF0" "M_dNgoGYWUM" "zz0vkGCvLsM" "iDrSylfg1TE" "myL2ZXEsibE"
+	"TgWKutWMT-o" = Making My Own Starbucks Pinkity Drinkity
+ 	"bsagopMV3ps" = THUNDER vs TRAIL BLAZERS | MUST-SEE Finish That Will Leave You SPEECHLESS! | Game 5
+	"ESmhuvXyizg" = Damian Lillard's game-winning 3 vs. OKC may be the best I've ever seen - Stephen A. | First Take
+	"AJrmiIcQ0Ss" = Charles Barkley DISAPPOINTED Thunder lose to Blazers 118-115; Damian: 50 pts; George/Russell: 65 pts
+	"F_IcydMxYF0" "M_dNgoGYWUM" "zz0vkGCvLsM" "iDrSylfg1TE" "myL2ZXEsibE"
 	"YGdwFtjBv0g" "dwV04XuiWq4" "YpqaWQiyQRA" "1j-D-oBrMyA" "6jaks_F2UFU" "NN9q4gSN1nY" "85p_oFk595I"
 
 Cream of the Crop videos for Data set 3:
-	"ESmhuvXyizg" "u90hopSXtlg" "6jaks_F2UFU" "3jCsZBEuvvw" "YpqaWQiyQRA" "kLQXPV12IfI" "F_IcydMxYF0" "BfPgTFYz1HE" "UtgcVzd8vsE"
+	"ESmhuvXyizg" = Damian Lillard's game-winning 3 vs. OKC may be the best I've ever seen - Stephen A. | First Take
+	"u90hopSXtlg" = The Try Guys Surprise Eugene With His Nightmare Car
+ 	"6jaks_F2UFU" = Recreating Discontinued Taco Bell Menu Items (TASTE TEST)
+ 	"3jCsZBEuvvw" = Chris Hemsworth and Scarlett Johansson Insult Each Other | CONTAINS STRONG LANGUAGE!
+"YpqaWQiyQRA" "kLQXPV12IfI" "F_IcydMxYF0" "BfPgTFYz1HE" "UtgcVzd8vsE"
 	"4IfcDSri7Xk" "zz0vkGCvLsM" "FVFPRstvlvk" "pvuN_WvF1to" "CWuJT_U14G4" "_4zczrxuCjY" "NscJhEV_Kbs" "myL2ZXEsibE" "dwV04XuiWq4"
 	"xnWCfchKYkQ"
