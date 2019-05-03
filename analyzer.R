@@ -387,3 +387,34 @@ print(cream_of_the_crop)
 # Cleanup non-result data sets and uneeded objects.
 rm(i, channelids, comments, views, likes, dislikes, data)
 
+
+
+###Getting the median to use for the mean (SUBTOPICS)
+med <- data.frame(views=numeric(), comments=numeric, likes, dislikes)
+
+for (i in 1:NUMVID) {
+  med[i,1] <- values[i + 13 * (i - 1), 2]
+  med[i,2] <- values[i + 13 * (i - 1), 3]
+  med[i,3] <- values[i + 13 * (i - 1), 4]
+  med[i,4] <- values[i + 13 * (i - 1), 5]
+}
+
+med <- med[rowSums(is.na(med)) == 0,]
+
+# Tell if video is in popular or not with TRUE and FALSE
+median(as.numeric(as.character(med$views)))
+median(as.numeric(as.character(med$comments)))
+median(as.numeric(as.character(med$likes)))
+median(as.numeric(as.character(med$dislikes)))
+
+
+#Find the mean for Data 0-4 with hardcoded answers from previous median
+a <- c(970589, 1243840, 1312130, 1590022, 2219152)
+b <- c(1564, 3368, 3534.5, 4063.5, 2837)
+c <- c(25528, 25469, 24928.5, 37290.5, 28671)
+d <- c(580, 1173, 1328, 1222, 1134)
+
+mean(a)
+mean(b)
+mean(c)
+mean(d)
